@@ -16,6 +16,7 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
     
+    // Add full text search index to enhance performance
     @Index("fulltext_title_index",{ fulltext: true })
     @Column({ unique: true })
     title: string;
@@ -24,9 +25,9 @@ import {
     price: number;
   
     @Column({type:'date'})
-    publication_date: Date;
+    publication_date: String;
   
-    @ManyToOne(() => Category, (category) => category.books) 
+    @ManyToOne(() => Category, (category) => category.books,{ eager: true }) 
     category: Category
 
     @ManyToMany(() => Author)
