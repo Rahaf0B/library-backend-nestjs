@@ -7,7 +7,11 @@ import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 @Module({
-  imports: [BookModule, AuthorModule, CategoryModule,ConfigModule.forRoot(),
+  imports: [
+    BookModule,
+    AuthorModule,
+    CategoryModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -16,13 +20,11 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.MYSQL_USER,
       autoLoadEntities: true,
       database: process.env.MYSQL_DATABASE,
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
-    
   ],
   controllers: [AppController],
   providers: [AppService],
-  
 })
 export class AppModule {}
