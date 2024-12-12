@@ -1,5 +1,5 @@
-import { Author } from 'src/author/entities/author.entity';
-import { Category } from 'src/category/entities/category.entity';
+import { Author } from '../../author/entities/author.entity';
+import { Category } from '../../category/entities/category.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -21,17 +21,17 @@ export class Book {
   @Column({ unique: true })
   title: string;
 
-  @Column()
+  @Column({ type: 'double' })
   price: number;
 
   @Column({ type: 'date' })
-  publication_date: String;
+  publication_date: Date;
 
-  @ManyToMany(() => Category)
-  @JoinTable()
-  category: Category[];
+  // Define the many-to-many relationship (a book belongs to multiple categories)
+  @ManyToMany(() => Category, (category) => category.books)
+  categories: Category[];
 
-  @ManyToMany(() => Author)
-  @JoinTable()
-  author: Author[];
+   // Define the many-to-many relationship (a book belongs to multiple authors)
+  @ManyToMany(() => Author, (author) => author.books)
+  authors: Author[];
 }
