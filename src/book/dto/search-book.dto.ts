@@ -1,3 +1,4 @@
+import { IntersectionType } from '@nestjs/mapped-types';
 import { Transform, Type } from 'class-transformer';
 import {
   IsDate,
@@ -16,15 +17,20 @@ import {
   notContains,
   Validate,
 } from 'class-validator';
-import { IsValidDate } from 'src/config/dateValidation';
+import { IsValidDate } from 'src/config/date-validation';
+import { orderByDTO } from 'src/dto-general/orderBy.dto';
+import { paginationDTO } from 'src/dto-general/pagination.dto';
 
-export class searchBookDTO {
+export class searchBookDTO extends IntersectionType(orderByDTO, paginationDTO) {
   //Define the id property
   @IsOptional()
   @IsNotEmpty({ message: 'Id should not be empty.' })
   @Type(() => Number)
   @IsInt()
-  @Min(0)
+  @Transform(({ value }) => {
+    return parseInt(value);
+  })
+  @Min(1)
   id?: number;
 
   // Define the title property
@@ -41,6 +47,7 @@ export class searchBookDTO {
 
   // Define the date property
   @IsOptional()
+  @IsNotEmpty({ message: 'date should not be empty.' })
   @Validate(IsValidDate)
   date?: Date;
 
@@ -53,13 +60,7 @@ export class searchBookDTO {
   // Define the price property
   @IsOptional()
   @IsNotEmpty({ message: 'Price should not be empty.' })
-  // @IsNumber()
   @Type(() => Number)
-  @IsInt()
-  //  @Matches(new RegExp('/^\d+$/'), { message: 'Price must be a valid positive integer.' })
-  @Transform(({ value }) => {
-    return parseInt(value);
-  })
   @Min(0, { message: 'Price must be greater than or equal to 0.' })
   price?: number;
 }

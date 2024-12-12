@@ -8,7 +8,6 @@ import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
 import { TypeORMError, EntityNotFoundError, QueryFailedError } from 'typeorm';
 import { ValidationError } from 'class-validator';
-import { console } from 'inspector';
 
 type MyResponseObj = {
   statusCode: number;
@@ -26,16 +25,27 @@ export class ExceptionsFilter extends BaseExceptionFilter {
     let status;
     let message;
 
-    // Check the type of th error and set the corresponding status code and error message
+    console.error(exception);
+    // Check the type of the error and set the corresponding status code and error message
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       message = exception.getResponse();
     } else if (exception instanceof ValidationError) {
+      // Handling validation errors for class-validator
       status = HttpStatus.BAD_REQUEST;
-      message = exception.property;
+      message = `Validation failed for property: ${exception.property}`;
     } else if (exception instanceof EntityNotFoundError) {
-      status = HttpStatus.UNPROCESSABLE_ENTITY;
+      // Handling EntityNotFoundError
+      status = HttpStatus.NOT_FOUND;
       message = exception.message;
+    } else if (exception instanceof QueryFailedError) {
+      // Handling QueryFailedError
+      status = HttpStatus.BAD_REQUEST;
+      message = exception.message;
+    } else if (exception instanceof TypeORMError) {
+      // Handling TypeORMError
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = 'Internal server error';
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = 'Internal server error';
@@ -49,6 +59,5 @@ export class ExceptionsFilter extends BaseExceptionFilter {
     };
 
     response.status(status).json(responseObj);
-    super.catch(exception, host);
   }
 }

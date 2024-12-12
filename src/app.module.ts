@@ -6,12 +6,14 @@ import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as cacheManager from 'cache-manager';
 @Module({
   imports: [
     BookModule,
     AuthorModule,
     CategoryModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -23,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
       logging: true,
     }),
+    CacheModule.register({isGlobal: true,store: 'memory'}),
   ],
   controllers: [AppController],
   providers: [AppService],

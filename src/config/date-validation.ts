@@ -9,7 +9,9 @@ import {
 export class IsValidDate implements ValidatorConstraintInterface {
   private _errorMessage: string;
   validate(valueToCheck: any, args: ValidationArguments) {
-    if (!valueToCheck) return true; // if the value is null then skip validation
+
+    // if the value is null then skip validation
+    if (!valueToCheck) return true; 
 
     // Check for valid formats: YYYY, YYYY-MM, or YYYY-MM-DD by using regex
     const dateRegex = /^(?:\d{4}|\d{4}-\d{2}|\d{4}-\d{2}-\d{2})$/;
@@ -27,7 +29,7 @@ export class IsValidDate implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    // Define the error message
+    // Return the error message
     return this._errorMessage;
   }
 }
