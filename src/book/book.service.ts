@@ -46,6 +46,7 @@ export class BookService {
       where: whereClause,
       relations: ['authors', 'categories'],
       order: orderOption,
+      relationLoadStrategy:"query",
       take: filter['number_of_items'] || null,
       skip: filter['page_number']
         ? (filter['page_number'] - 1) * filter['number_of_items']

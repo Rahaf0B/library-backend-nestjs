@@ -168,10 +168,10 @@ export default class MainDataSeeder implements Seeder {
           price: bookData.price,
           publication_date: bookData.publication_date,
         });
-
+        book.authors = [];
         // Add relationships between book and categories and authors
         for (const authorId of bookData.authors) {
-          book.authors = [];
+          
           const author = await authorRepository.findOne({
             where: { id: authorId },
           });
@@ -179,9 +179,8 @@ export default class MainDataSeeder implements Seeder {
             book.authors.push(author);
           }
         }
-
+        book.categories = [];
         for (const categoryId of bookData.categories) {
-          book.categories = [];
           const category = await categoryRepository.findOne({
             where: { id: categoryId },
           });
