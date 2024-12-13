@@ -25,13 +25,13 @@ export class Book {
   price: number;
 
   @Column({ type: 'date' })
-  publication_date: Date;
+  publication_date: String;
 
   // Define the many-to-many relationship (a book belongs to multiple categories)
   @ManyToMany(() => Category, (category) => category.books)
-  categories: Category[];
+  categories?: Category[];
 
    // Define the many-to-many relationship (a book belongs to multiple authors)
   @ManyToMany(() => Author, (author) => author.books)
-  authors: Author[];
+  authors?: Author[];
 }

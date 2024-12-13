@@ -21,5 +21,5 @@ export class Author {
    // Define the many-to-many relationship (an author can have multiple books)
   @ManyToMany(() => Book, (book) => book.authors)
   @JoinTable()
-  books: Book[];
+  books?: Book[];
 }

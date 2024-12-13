@@ -22,8 +22,8 @@ export class BookService {
   };
 
   // Function for searching for books
-  async searchBook(filter: searchBookDTO): Promise<ISearchResult> {
-   
+  async searchForBooks(filter: searchBookDTO): Promise<ISearchResult> {
+    console.log(filter);
     // Set the where clause with the correct queries
     let whereClause = {};
     for (const key in filter) {

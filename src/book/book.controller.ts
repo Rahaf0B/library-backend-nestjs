@@ -23,7 +23,7 @@ export class BookController {
   // Define the Query type for Book Search and the Validation for the input fields
   searchBook(@Query(ValidationPipe) criteria: searchBookDTO) {
     // Call the searchBook method from BookService and return the results
-    const result = this.bookService.searchBook(criteria);
+    const result = this.bookService.searchForBooks(criteria);
     return result;
   }
 }
