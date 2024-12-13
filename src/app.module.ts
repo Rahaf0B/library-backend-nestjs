@@ -8,24 +8,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as cacheManager from 'cache-manager';
+import { createDataBaseConfig } from './database/config/dbConfig';
 @Module({
   imports: [
     BookModule,
     AuthorModule,
     CategoryModule,
-    ConfigModule.forRoot({isGlobal: true}),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.MYSQL_HOST,
-      port: parseInt(process.env.MYSQL_PORT),
-      password: process.env.MYSQL_PASSWORD,
-      username: process.env.MYSQL_USER,
-      autoLoadEntities: true,
-      database: process.env.MYSQL_DATABASE,
-      synchronize: true,
-      logging: true,
-    }),
-    CacheModule.register({isGlobal: true,store: 'memory'}),
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot(
+      createDataBaseConfig(process.env.MYSQL_DATABASE, true),
+    ),
+    CacheModule.register({ isGlobal: true, store: 'memory' }),
   ],
   controllers: [AppController],
   providers: [AppService],

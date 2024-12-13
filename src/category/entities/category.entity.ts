@@ -22,5 +22,5 @@ export class Category {
   // Define the many-to-many relationship ( a category can have many books )
   @ManyToMany(() => Book, (book) => book.categories)
   @JoinTable()
-  books: Book[]
+  books?: Book[]
 }

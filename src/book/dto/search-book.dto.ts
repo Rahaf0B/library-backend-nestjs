@@ -17,9 +17,9 @@ import {
   notContains,
   Validate,
 } from 'class-validator';
-import { IsValidDate } from 'src/config/date-validation';
-import { orderByDTO } from 'src/dto-general/orderBy.dto';
-import { paginationDTO } from 'src/dto-general/pagination.dto';
+import { IsValidDate } from '../../config/date-validation';
+import { orderByDTO } from '../../dto-general/orderBy.dto';
+import { paginationDTO } from '../../dto-general/pagination.dto';
 
 export class searchBookDTO extends IntersectionType(orderByDTO, paginationDTO) {
   //Define the id property
