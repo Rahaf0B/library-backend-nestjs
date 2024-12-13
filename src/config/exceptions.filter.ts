@@ -3,15 +3,15 @@ import {
   ArgumentsHost,
   HttpStatus,
   HttpException,
+  
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
 import { TypeORMError, EntityNotFoundError, QueryFailedError } from 'typeorm';
 import { ValidationError } from 'class-validator';
 
-type MyResponseObj = {
+type ErrorResponseObj = {
   statusCode: number;
-  path: string;
   response: string | object;
 };
 
@@ -25,15 +25,22 @@ export class ExceptionsFilter extends BaseExceptionFilter {
     let status;
     let message;
 
-    console.error(exception);
     // Check the type of the error and set the corresponding status code and error message
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       message = exception.getResponse();
+
+      if(message?.error){
+        delete message.error
+      }
+      if(message?.statusCode){
+        delete message.statusCode
+      }
     } else if (exception instanceof ValidationError) {
       // Handling validation errors for class-validator
       status = HttpStatus.BAD_REQUEST;
       message = `Validation failed for property: ${exception.property}`;
+     
     } else if (exception instanceof EntityNotFoundError) {
       // Handling EntityNotFoundError
       status = HttpStatus.NOT_FOUND;
@@ -52,9 +59,8 @@ export class ExceptionsFilter extends BaseExceptionFilter {
     }
 
     // Set the response object and send it to the client
-    const responseObj: MyResponseObj = {
+    const responseObj: ErrorResponseObj = {
       statusCode: status,
-      path: request.url,
       response: message,
     };
 
