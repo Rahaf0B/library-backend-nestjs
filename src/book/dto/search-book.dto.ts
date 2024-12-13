@@ -61,6 +61,7 @@ export class searchBookDTO extends IntersectionType(orderByDTO, paginationDTO) {
   @IsOptional()
   @IsNotEmpty({ message: 'Price should not be empty.' })
   @Type(() => Number)
+  @IsNumber()
   @Min(0, { message: 'Price must be greater than or equal to 0.' })
   price?: number;
 }
